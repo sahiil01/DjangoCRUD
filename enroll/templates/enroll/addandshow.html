@@ -1,0 +1,60 @@
+{% extends 'enroll/base.html' %} {% block content %}
+<div class="row">
+	<div class="col-sm-4">
+		<h4 class="text-center alert alert-info">Add New Student</h4>
+
+		<form action="" method="POST" class="form-control">
+			{% csrf_token %} {{form.as_p}}
+
+			<input type="submit" class="btn btn-success" value="Add" />
+		</form>
+	</div>
+	<div class="col-sm-7 offset-1">
+		<h4 class="text-center alert alert-info">Show Student Info</h4>
+		{%if formfill%}
+
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Name</th>
+					<th scope="col">Email</th>
+					<th scope="col">Password</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for formdata in formfill %}
+				<tr>
+					<th scope="row">{{formdata.id}}</th>
+					<td>{{formdata.name}}</td>
+					<td>{{formdata.email}}</td>
+					<td>{{formdata.password}}</td>
+					<td>
+						<a
+							href="{% url 'update_student'  formdata.id %}"
+							class="btn btn-warning btn-sm"
+							>Edit</a
+						>
+					</td>
+					<td>
+						<form action="{% url 'delete_student' formdata.id %}" method="POST">
+							{% csrf_token %}
+							<input
+								type="submit"
+								class="btn btn-danger btn-sm"
+								value="Delete"
+							/>
+						</form>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		{% else %}
+		<h4>NO Data, Please add some data!</h4>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock content %}
